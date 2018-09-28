@@ -20,6 +20,17 @@ public class Home {
 		this.value = value;
 	}
 
+
+
+	@Override
+	public String toString() {
+		return "Home @ (" + lat + ", " + lon + ") with " + nbBedrooms + " bedrooms for " + value + "$";
+	}
+
+
+	// Getters and setters
+
+
 	public int getLon() {
 		return lon;
 	}
