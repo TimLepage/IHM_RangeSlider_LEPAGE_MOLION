@@ -12,8 +12,10 @@ public class RangeSlider extends JSlider implements _RangeSlider {
 	 * Constructs a RangeSlider with default minimum and maximum values of 0 and
 	 * 100.
 	 */
-	public RangeSlider() {
+	public RangeSlider(int min, int max) {
 		setOrientation(HORIZONTAL);
+        this.setMinimum(min);
+        this.setMaximum(max);
 	}
 
 
