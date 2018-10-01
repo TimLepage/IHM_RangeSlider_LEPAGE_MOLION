@@ -40,19 +40,38 @@ public class HomeFinder extends JFrame {
 	private JLabel distanceSliderLowValue = new JLabel();
 	private JLabel distanceSliderHighValueLabel = new JLabel();
 	private JLabel distanceSliderHighValue = new JLabel();
+	
+	private int distanceLowThumb;
+	private int distanceHighThumb;
+	private int bedroomLowThumb;
+	private int bedroomHighThumb;
+	
+
+	public void updateHomeList(int distanceLowValue, int distanceHighValue, int bedroomLowValue, int bedroomHighValue) {
+		
+	}
+
 	private ChangeListener bedroomListener = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
 			RangeSlider slider = (RangeSlider) e.getSource();
-			bedroomSliderLowValue.setText(String.valueOf(slider.getValue()));
-			bedroomSliderHighValue.setText(String.valueOf(slider.getSliderRight()));
+			bedroomLowThumb = slider.getValue();
+			bedroomHighThumb = slider.getSliderRight();
+			bedroomSliderLowValue.setText(String.valueOf(bedroomLowThumb));
+			bedroomSliderHighValue.setText(String.valueOf(bedroomHighThumb));
+			updateHomeList(distanceLowThumb, distanceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke dans une liste les maisons correspondant
+			// aux sliders
 			map.repaint();
 		}
 	};
 	private ChangeListener distanceListener = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
 			RangeSlider slider = (RangeSlider) e.getSource();
-			distanceSliderLowValue.setText(String.valueOf(slider.getValue()));
-			distanceSliderHighValue.setText(String.valueOf(slider.getSliderRight()));
+			distanceLowThumb = slider.getValue();
+			distanceHighThumb = slider.getSliderRight();
+			distanceSliderLowValue.setText(String.valueOf(distanceLowThumb));
+			distanceSliderHighValue.setText(String.valueOf(distanceHighThumb));
+			updateHomeList(distanceLowThumb, distanceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke dans une liste les maisons correspondant
+			// aux sliders
 			map.repaint();
 		}
 	};
@@ -82,14 +101,14 @@ public class HomeFinder extends JFrame {
 		map.setBackground(Color.WHITE);
 		map.setPreferredSize(new Dimension(240, 240));
 
-		// create the slider1
+		// create the slider bedroom
 		RangeSlider rangeSliderTop = new RangeSlider(0, 10);
 		// rangeSliderTop.init(3, 7, rangeSliderLabel1)
 		bedroomSliderLowValueLabel.setText("Bedroom Lower value:");
 		bedroomSliderHighValueLabel.setText("Bedroom Upper value:");
 		bedroomSliderLowValue.setHorizontalAlignment(JLabel.LEFT);
 		bedroomSliderHighValue.setHorizontalAlignment(JLabel.LEFT);
-		// Add listener to update display of slider1
+		// Add listener to update display of slider bedroom 
 		rangeSliderTop.addChangeListener(bedroomListener);
 
 		rightTop.add(bedroomSliderLowValueLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
@@ -103,15 +122,17 @@ public class HomeFinder extends JFrame {
 		rightTop.add(rangeSliderTop, new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
 				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
-		// Initialize values of slider 1
+		// Initialize values of slider bedroom
 		rangeSliderTop.setValue(3);
 		rangeSliderTop.setSliderRight(7);
+		bedroomLowThumb = 3;
+		bedroomHighThumb = 7;
 
-		// Initialize value display of slider 1
+		// Initialize value display of slider bedroom
 		bedroomSliderLowValue.setText(String.valueOf(rangeSliderTop.getValue()));
 		bedroomSliderHighValue.setText(String.valueOf(rangeSliderTop.getSliderRight()));
 
-		// create the slider2
+		// create the slider distance
 		RangeSlider rangeSliderBot = new RangeSlider(0, 100);
 		distanceSliderLowValueLabel.setText("Distance Lower value:");
 		distanceSliderHighValueLabel.setText("Distance Upper value:");
@@ -131,9 +152,11 @@ public class HomeFinder extends JFrame {
 		rightBot.add(rangeSliderBot, new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
 				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
-		// Initialize values.
+		// Initialize values slider distance.
 		rangeSliderBot.setValue(3);
 		rangeSliderBot.setSliderRight(7);
+		distanceLowThumb = 3;
+		distanceHighThumb = 7;
 
 		// Initialize value display.
 		distanceSliderLowValue.setText(String.valueOf(rangeSliderBot.getValue()));
@@ -172,12 +195,10 @@ public class HomeFinder extends JFrame {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		Iterator<Home> ite = homeList.iterator();
 
 		public void paint(Graphics g) {
+			Iterator<Home> ite = homeList.iterator();
 			super.paint(g);
-			updateHomeList();// Stocke dans une liste les maisons correspondant
-								// aux sliders
 			while (ite.hasNext()) {
 				g.fillOval(ite.next().x, ite.next().y, 5, 5);
 			}
