@@ -29,8 +29,9 @@ public class HomeFinder extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private MyPanel map;
-	//ArrayList<Home> homeList = new ArrayList<Home>();
+	private Map map;
+	CityCreator city;
+	ArrayList<Home> homeList = new ArrayList<Home>();
 	private JLabel bedroomSliderLowValueLabel = new JLabel();
 	private JLabel bedroomSliderLowValue = new JLabel();
 	private JLabel bedroomSliderHighValueLabel = new JLabel();
@@ -40,15 +41,23 @@ public class HomeFinder extends JFrame {
 	private JLabel priceSliderLowValue = new JLabel();
 	private JLabel priceSliderHighValueLabel = new JLabel();
 	private JLabel priceSliderHighValue = new JLabel();
-	
+
 	private int priceLowThumb;
 	private int priceHighThumb;
 	private int bedroomLowThumb;
 	private int bedroomHighThumb;
-	
 
 	public void updateHomeList(int priceLowValue, int priceHighValue, int bedroomLowValue, int bedroomHighValue) {
-		
+		homeList.clear();
+		Iterator<Home> ite = city.homeList.iterator();
+		while (ite.hasnext()) {
+			Home currentHome = ite.next();
+			if (currentHome.value >= priceLowValue && currentHome.value <= priceHighValue
+					&& currentHome.nbBedrooms >= bedroomLowValue && currentHome.nbBedrooms <= bedroomHighValue) {
+				homeList.add(currentHome);
+			}
+		}
+
 	}
 
 	private ChangeListener bedroomListener = new ChangeListener() {
@@ -58,7 +67,13 @@ public class HomeFinder extends JFrame {
 			bedroomHighThumb = slider.getSliderRight();
 			bedroomSliderLowValue.setText(String.valueOf(bedroomLowThumb));
 			bedroomSliderHighValue.setText(String.valueOf(bedroomHighThumb));
-			updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke dans une liste les maisons correspondant
+			updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke
+																								// dans
+																								// une
+																								// liste
+																								// les
+																								// maisons
+																								// correspondant
 			// aux sliders
 			map.repaint();
 		}
@@ -70,13 +85,24 @@ public class HomeFinder extends JFrame {
 			priceHighThumb = slider.getSliderRight();
 			priceSliderLowValue.setText(String.valueOf(priceLowThumb));
 			priceSliderHighValue.setText(String.valueOf(priceHighThumb));
-			updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke dans une liste les maisons correspondant
+			updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke
+																								// dans
+																								// une
+																								// liste
+																								// les
+																								// maisons
+																								// correspondant
 			// aux sliders
 			map.repaint();
 		}
 	};
 
 	public HomeFinder() {
+		// Create a city
+		city = new CityCreator(size = 100);// generates a size sized city with
+											// random values, lon, lat and
+											// bedroom
+
 		// create a new panel with GridBagLayout manager
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -97,7 +123,7 @@ public class HomeFinder extends JFrame {
 		rightBot.setLayout(new GridBagLayout());
 
 		// Create the map
-		map = new MyPanel();
+		map = new Map();
 		map.setBackground(Color.WHITE);
 		map.setPreferredSize(new Dimension(240, 240));
 
@@ -108,7 +134,7 @@ public class HomeFinder extends JFrame {
 		bedroomSliderHighValueLabel.setText("Bedroom Upper value:");
 		bedroomSliderLowValue.setHorizontalAlignment(JLabel.LEFT);
 		bedroomSliderHighValue.setHorizontalAlignment(JLabel.LEFT);
-		// Add listener to update display of slider bedroom 
+		// Add listener to update display of slider bedroom
 		rangeSliderTop.addChangeListener(bedroomListener);
 
 		rightTop.add(bedroomSliderLowValueLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
@@ -189,7 +215,7 @@ public class HomeFinder extends JFrame {
 
 	}
 
-	class MyPanel extends JPanel {
+	class Map extends JPanel {
 
 		/**
 		 * 
@@ -197,11 +223,11 @@ public class HomeFinder extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		public void paint(Graphics g) {
-			//Iterator<Home> ite = homeList.iterator();
+			// Iterator<Home> ite = homeList.iterator();
 			super.paint(g);
-//			while (ite.hasNext()) {
-//				g.fillOval(ite.next().lon, ite.next().lat, 5, 5);
-//			}
+			// while (ite.hasNext()) {
+			// g.fillOval(ite.next().lon, ite.next().lat, 5, 5);
+			// }
 		}
 
 	}
