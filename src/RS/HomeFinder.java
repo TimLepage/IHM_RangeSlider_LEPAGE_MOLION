@@ -30,24 +30,24 @@ public class HomeFinder extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private MyPanel map;
-	ArrayList<Home> homeList = new ArrayList<Home>();
+	//ArrayList<Home> homeList = new ArrayList<Home>();
 	private JLabel bedroomSliderLowValueLabel = new JLabel();
 	private JLabel bedroomSliderLowValue = new JLabel();
 	private JLabel bedroomSliderHighValueLabel = new JLabel();
 	private JLabel bedroomSliderHighValue = new JLabel();
 
-	private JLabel distanceSliderLowValueLabel = new JLabel();
-	private JLabel distanceSliderLowValue = new JLabel();
-	private JLabel distanceSliderHighValueLabel = new JLabel();
-	private JLabel distanceSliderHighValue = new JLabel();
+	private JLabel priceSliderLowValueLabel = new JLabel();
+	private JLabel priceSliderLowValue = new JLabel();
+	private JLabel priceSliderHighValueLabel = new JLabel();
+	private JLabel priceSliderHighValue = new JLabel();
 	
-	private int distanceLowThumb;
-	private int distanceHighThumb;
+	private int priceLowThumb;
+	private int priceHighThumb;
 	private int bedroomLowThumb;
 	private int bedroomHighThumb;
 	
 
-	public void updateHomeList(int distanceLowValue, int distanceHighValue, int bedroomLowValue, int bedroomHighValue) {
+	public void updateHomeList(int priceLowValue, int priceHighValue, int bedroomLowValue, int bedroomHighValue) {
 		
 	}
 
@@ -58,19 +58,19 @@ public class HomeFinder extends JFrame {
 			bedroomHighThumb = slider.getSliderRight();
 			bedroomSliderLowValue.setText(String.valueOf(bedroomLowThumb));
 			bedroomSliderHighValue.setText(String.valueOf(bedroomHighThumb));
-			updateHomeList(distanceLowThumb, distanceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke dans une liste les maisons correspondant
+			updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke dans une liste les maisons correspondant
 			// aux sliders
 			map.repaint();
 		}
 	};
-	private ChangeListener distanceListener = new ChangeListener() {
+	private ChangeListener priceListener = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
 			RangeSlider slider = (RangeSlider) e.getSource();
-			distanceLowThumb = slider.getValue();
-			distanceHighThumb = slider.getSliderRight();
-			distanceSliderLowValue.setText(String.valueOf(distanceLowThumb));
-			distanceSliderHighValue.setText(String.valueOf(distanceHighThumb));
-			updateHomeList(distanceLowThumb, distanceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke dans une liste les maisons correspondant
+			priceLowThumb = slider.getValue();
+			priceHighThumb = slider.getSliderRight();
+			priceSliderLowValue.setText(String.valueOf(priceLowThumb));
+			priceSliderHighValue.setText(String.valueOf(priceHighThumb));
+			updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke dans une liste les maisons correspondant
 			// aux sliders
 			map.repaint();
 		}
@@ -132,35 +132,35 @@ public class HomeFinder extends JFrame {
 		bedroomSliderLowValue.setText(String.valueOf(rangeSliderTop.getValue()));
 		bedroomSliderHighValue.setText(String.valueOf(rangeSliderTop.getSliderRight()));
 
-		// create the slider distance
-		RangeSlider rangeSliderBot = new RangeSlider(0, 100);
-		distanceSliderLowValueLabel.setText("Distance Lower value:");
-		distanceSliderHighValueLabel.setText("Distance Upper value:");
-		distanceSliderLowValue.setHorizontalAlignment(JLabel.LEFT);
-		distanceSliderHighValue.setHorizontalAlignment(JLabel.LEFT);
+		// create the slider price
+		RangeSlider rangeSliderBot = new RangeSlider(0, 100000);
+		priceSliderLowValueLabel.setText("Price Lower value:");
+		priceSliderHighValueLabel.setText("Price Upper value:");
+		priceSliderLowValue.setHorizontalAlignment(JLabel.LEFT);
+		priceSliderHighValue.setHorizontalAlignment(JLabel.LEFT);
 		// Add listener to update display.
-		rangeSliderBot.addChangeListener(distanceListener);
+		rangeSliderBot.addChangeListener(priceListener);
 
-		rightBot.add(distanceSliderLowValueLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+		rightBot.add(priceSliderLowValueLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 3, 3), 0, 0));
-		rightBot.add(distanceSliderLowValue, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+		rightBot.add(priceSliderLowValue, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
 				GridBagConstraints.NONE, new Insets(0, 0, 3, 0), 0, 0));
-		rightBot.add(distanceSliderHighValueLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+		rightBot.add(priceSliderHighValueLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 3, 3), 0, 0));
-		rightBot.add(distanceSliderHighValue, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+		rightBot.add(priceSliderHighValue, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
 				GridBagConstraints.NONE, new Insets(0, 0, 6, 0), 0, 0));
 		rightBot.add(rangeSliderBot, new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
 				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
-		// Initialize values slider distance.
-		rangeSliderBot.setValue(3);
-		rangeSliderBot.setSliderRight(7);
-		distanceLowThumb = 3;
-		distanceHighThumb = 7;
+		// Initialize values slider price.
+		rangeSliderBot.setValue(0);
+		rangeSliderBot.setSliderRight(15000);
+		priceLowThumb = 0;
+		priceHighThumb = 15000;
 
 		// Initialize value display.
-		distanceSliderLowValue.setText(String.valueOf(rangeSliderBot.getValue()));
-		distanceSliderHighValue.setText(String.valueOf(rangeSliderBot.getSliderRight()));
+		priceSliderLowValue.setText(String.valueOf(rangeSliderBot.getValue()));
+		priceSliderHighValue.setText(String.valueOf(rangeSliderBot.getSliderRight()));
 
 		// add components to the panel
 		rightPanel.add(rightTop, BorderLayout.PAGE_START);
@@ -197,11 +197,11 @@ public class HomeFinder extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		public void paint(Graphics g) {
-			Iterator<Home> ite = homeList.iterator();
+			//Iterator<Home> ite = homeList.iterator();
 			super.paint(g);
-			while (ite.hasNext()) {
-				g.fillOval(ite.next().x, ite.next().y, 5, 5);
-			}
+//			while (ite.hasNext()) {
+//				g.fillOval(ite.next().lon, ite.next().lat, 5, 5);
+//			}
 		}
 
 	}
