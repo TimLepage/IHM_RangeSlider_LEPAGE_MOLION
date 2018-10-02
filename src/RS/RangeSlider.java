@@ -9,13 +9,23 @@ import javax.swing.JSlider;
 public class RangeSlider extends JSlider implements _RangeSlider {
 
 	/**
-	 * Constructs a RangeSlider with default minimum and maximum values of 0 and
-	 * 100.
+	 * Constructs a RangeSlider with default minimum and maximum values
 	 */
 	public RangeSlider(int min, int max) {
 		setOrientation(HORIZONTAL);
         this.setMinimum(min);
         this.setMaximum(max);
+	}
+	
+	/**
+	 * Constructs a RangeSlider with default minimum and maximum values
+	 */
+	public RangeSlider(int min, int max, int value, int extent) {
+		setOrientation(HORIZONTAL);
+        this.setMinimum(min);
+        this.setMaximum(max);
+        this.setValue(value);
+        this.setSliderRight(extent);
 	}
 
 

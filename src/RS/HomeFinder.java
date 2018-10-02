@@ -11,12 +11,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -30,8 +27,8 @@ public class HomeFinder extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private Map map;
-	CityCreator city;
-	ArrayList<Home> homeList = new ArrayList<Home>();
+	private CityCreator city;
+	private ArrayList<Home> homeList = new ArrayList<Home>();
 	private JLabel bedroomSliderLowValueLabel = new JLabel();
 	private JLabel bedroomSliderLowValue = new JLabel();
 	private JLabel bedroomSliderHighValueLabel = new JLabel();
@@ -46,52 +43,57 @@ public class HomeFinder extends JFrame {
 	private int priceHighThumb;
 	private int bedroomLowThumb;
 	private int bedroomHighThumb;
-
+	
 	public void updateHomeList(int priceLowValue, int priceHighValue, int bedroomLowValue, int bedroomHighValue) {
 		homeList.clear();
-		Iterator<Home> ite = city.homeList.iterator();
-		while (ite.hasnext()) {
+		Iterator<Home> ite = city.getHomeList().iterator();
+		int v = ite.next().getValue();
+		System.out.println("\n\n");
+		while (ite.hasNext()) {
 			Home currentHome = ite.next();
-			if (currentHome.value >= priceLowValue && currentHome.value <= priceHighValue
-					&& currentHome.nbBedrooms >= bedroomLowValue && currentHome.nbBedrooms <= bedroomHighValue) {
+			if (currentHome.getValue() >= priceLowValue && currentHome.getValue() <= priceHighValue
+					&& currentHome.getNbBedrooms() >= bedroomLowValue
+					&& currentHome.getNbBedrooms() <= bedroomHighValue) {
+				System.out.println(currentHome.toString());
 				homeList.add(currentHome);
 			}
 		}
-
 	}
 
 	private ChangeListener bedroomListener = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
+			//System.out.println(bedroomLowThumb + " " + bedroomHighThumb);
 			RangeSlider slider = (RangeSlider) e.getSource();
 			bedroomLowThumb = slider.getValue();
 			bedroomHighThumb = slider.getSliderRight();
 			bedroomSliderLowValue.setText(String.valueOf(bedroomLowThumb));
 			bedroomSliderHighValue.setText(String.valueOf(bedroomHighThumb));
 			updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke
-																								// dans
-																								// une
-																								// liste
-																								// les
-																								// maisons
-																								// correspondant
+			// dans
+			// une
+			// liste
+			// les
+			// maisons
+			// correspondant
 			// aux sliders
 			map.repaint();
 		}
 	};
 	private ChangeListener priceListener = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
+			//System.out.println(priceLowThumb + " " + priceHighThumb);
 			RangeSlider slider = (RangeSlider) e.getSource();
 			priceLowThumb = slider.getValue();
 			priceHighThumb = slider.getSliderRight();
 			priceSliderLowValue.setText(String.valueOf(priceLowThumb));
 			priceSliderHighValue.setText(String.valueOf(priceHighThumb));
 			updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);// Stocke
-																								// dans
-																								// une
-																								// liste
-																								// les
-																								// maisons
-																								// correspondant
+			// dans
+			// une
+			// liste
+			// les
+			// maisons
+			// correspondant
 			// aux sliders
 			map.repaint();
 		}
@@ -99,9 +101,9 @@ public class HomeFinder extends JFrame {
 
 	public HomeFinder() {
 		// Create a city
-		city = new CityCreator(size = 100);// generates a size sized city with
-											// random values, lon, lat and
-											// bedroom
+		city = new CityCreator(10);// generates a size sized city with
+									// random values, lon, lat and
+									// bedroom
 
 		// create a new panel with GridBagLayout manager
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,14 +130,12 @@ public class HomeFinder extends JFrame {
 		map.setPreferredSize(new Dimension(240, 240));
 
 		// create the slider bedroom
-		RangeSlider rangeSliderTop = new RangeSlider(0, 10);
+		RangeSlider rangeSliderTop = new RangeSlider(0, 10, 3, 7);
 		// rangeSliderTop.init(3, 7, rangeSliderLabel1)
 		bedroomSliderLowValueLabel.setText("Bedroom Lower value:");
 		bedroomSliderHighValueLabel.setText("Bedroom Upper value:");
 		bedroomSliderLowValue.setHorizontalAlignment(JLabel.LEFT);
 		bedroomSliderHighValue.setHorizontalAlignment(JLabel.LEFT);
-		// Add listener to update display of slider bedroom
-		rangeSliderTop.addChangeListener(bedroomListener);
 
 		rightTop.add(bedroomSliderLowValueLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 3, 3), 0, 0));
@@ -154,18 +154,19 @@ public class HomeFinder extends JFrame {
 		bedroomLowThumb = 3;
 		bedroomHighThumb = 7;
 
+		// Add listener to update display of slider bedroom
+		rangeSliderTop.addChangeListener(bedroomListener);
+
 		// Initialize value display of slider bedroom
 		bedroomSliderLowValue.setText(String.valueOf(rangeSliderTop.getValue()));
 		bedroomSliderHighValue.setText(String.valueOf(rangeSliderTop.getSliderRight()));
 
 		// create the slider price
-		RangeSlider rangeSliderBot = new RangeSlider(0, 100000);
+		RangeSlider rangeSliderBot = new RangeSlider(0, 100000, 0, 5000);
 		priceSliderLowValueLabel.setText("Price Lower value:");
 		priceSliderHighValueLabel.setText("Price Upper value:");
 		priceSliderLowValue.setHorizontalAlignment(JLabel.LEFT);
 		priceSliderHighValue.setHorizontalAlignment(JLabel.LEFT);
-		// Add listener to update display.
-		rangeSliderBot.addChangeListener(priceListener);
 
 		rightBot.add(priceSliderLowValueLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 3, 3), 0, 0));
@@ -180,9 +181,15 @@ public class HomeFinder extends JFrame {
 
 		// Initialize values slider price.
 		rangeSliderBot.setValue(0);
-		rangeSliderBot.setSliderRight(15000);
+		rangeSliderBot.setSliderRight(50000);
 		priceLowThumb = 0;
-		priceHighThumb = 15000;
+		priceHighThumb = 50000;
+
+		// Add listener to update display.
+		rangeSliderBot.addChangeListener(priceListener);
+
+		// First call of updateHomeList to show the initial results
+		updateHomeList(priceLowThumb, priceHighThumb, bedroomLowThumb, bedroomHighThumb);
 
 		// Initialize value display.
 		priceSliderLowValue.setText(String.valueOf(rangeSliderBot.getValue()));
@@ -223,11 +230,13 @@ public class HomeFinder extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		public void paint(Graphics g) {
-			// Iterator<Home> ite = homeList.iterator();
+			Iterator<Home> ite = homeList.iterator();
 			super.paint(g);
-			// while (ite.hasNext()) {
-			// g.fillOval(ite.next().lon, ite.next().lat, 5, 5);
-			// }
+			while (ite.hasNext()) {
+				Home currentHome = ite.next();
+				System.out.println(currentHome.getLon() + " " + currentHome.getLat());
+				g.fillOval(currentHome.getLon(),currentHome.getLat(), 5, 5);
+			}
 		}
 
 	}
