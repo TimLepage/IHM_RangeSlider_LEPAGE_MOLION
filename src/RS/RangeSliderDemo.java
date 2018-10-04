@@ -22,7 +22,7 @@ public class RangeSliderDemo extends JPanel {
     private JLabel rangeSliderValue1 = new JLabel();
     private JLabel rangeSliderLabel2 = new JLabel();
     private JLabel rangeSliderValue2 = new JLabel();
-    private RangeSlider rangeSlider = new RangeSlider();
+    private RangeSlider rangeSlider = new RangeSlider(0, 15);
 
     public RangeSliderDemo() {
         setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
@@ -34,8 +34,6 @@ public class RangeSliderDemo extends JPanel {
         rangeSliderValue2.setHorizontalAlignment(JLabel.LEFT);
         
         rangeSlider.setPreferredSize(new Dimension(240, rangeSlider.getPreferredSize().height));
-        rangeSlider.setMinimum(0);
-        rangeSlider.setMaximum(10);
         
         // Add listener to update display.
         rangeSlider.addChangeListener(new ChangeListener() {

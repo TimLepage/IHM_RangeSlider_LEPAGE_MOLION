@@ -1,24 +1,35 @@
 package RS;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 public class CityCreator {
 
 	private static int minLon = 0 ;
-	private static int maxLon = 100 ;
+	private static int maxLon = 240 ;
 	private static int minLat = 0 ;
-	private static int maxLat = 100 ;
+	private static int maxLat = 240 ;
 	
 	private static int minNbBedrooms = 1 ;
-	private static int maxNbBedrooms = 7 ;
+	private static int maxNbBedrooms = 10 ;
 	
 	private static int minValue = 20000;
-	private static int maxValue = 1000000;
+	private static int maxValue = 100000;
 	
 	private static int nbHomes = 2;
 	
-	private	static List<Home> homeList = new LinkedList<Home>();
+	private static ArrayList<Home> homeList = new ArrayList<Home>();
+	
+	public ArrayList<Home> getHomeList(){
+		return homeList;
+	}
+	
+	public CityCreator(int size){
+		for (int i = 0; i < size; i++) {
+			Home h = new Home(randomIntInRange(minLon, maxLon), randomIntInRange(minLat, maxLat), randomIntInRange(minNbBedrooms, maxNbBedrooms), randomIntInRange(minValue, maxValue));
+			System.out.println(h.toString());
+			homeList.add(h);
+		}
+	}
 	
 	private static int randomIntInRange(int minValue, int maxValue){
 		return (int)(Math.random() * ((maxValue - minValue) + 1)) + minValue;
